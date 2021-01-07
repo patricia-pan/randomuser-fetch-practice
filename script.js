@@ -31,17 +31,42 @@
 
 // taylorsFunction(['Hot Mulligan', 'Local Natives'])
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// We want to be able to enter a number and have that number of people show up in our list. 
+// That means we have to add people to a list, and every time we hit submit, clear our list and then readd the correct number of randos.
 
-const randomUserEndpoint = 'https://randomuser.me/api/?results=10' // Add ?results=10 to URL get 10 results. 
+//// DOM Manipulation: Add a new person to the unordered list. ////
+const addPerson = (person) => {
+    let peopleList = document.getElementById('people_list')
+    let newPerson = document.createElement('li')
+    newPerson.textContent = `${person.name.first} ${person.name.last}` // String interpolation.
+    // newPerson.textContent = person.name.first + ' ' + person.name.last // String concatenation.
+    peopleList.appendChild(newPerson)
+}
 
-fetch(randomUserEndpoint)
-.then((fetchedUsers) => {
-    return fetchedUsers.json()
-})
-.then((jsonUsers) => {
-    console.log(jsonUsers)
-})
-.catch((error) => {
-    console.log('Failed to fetch users', error)
-})
+const randomUserEndpoint = 'https://randomuser.me/api/?results=' // Add ?results=10 to URL get 10 results. 
+
+document.addEventListener('DOMContentLoaded', () =>
+    form.addEventListener('submit', (event) => {
+        event.preventDefault() // Prevent the page from refreshing.
+
+        // Clear the list each time. 
+        // How to remove all child nodes: https://www.javascripttutorial.net/dom/manipulating/remove-all-child-nodes/
+        while(peopleList.firstChild) { // Checks if there's a first child. Basically removes all children.
+            peopleList.removeChild(peopleList.firstChild)
+        }
+
+        fetch(randomUserEndpoint + input.value)
+        .then((fetchedUsers) => {
+            return fetchedUsers.json()
+        })
+        .then((jsonUsers) => {
+            jsonUsers.results.forEach(addPerson) // For each jsonUsers, we'll run addPerson on it.
+            console.log(jsonUsers.results)
+        })
+        .catch((error) => {
+            console.log('Failed to fetch users!', error)
+        })
+    })
+)
