@@ -9,10 +9,10 @@
 // fetch(redditEndpoint) // Can also put in the URL link directly.
 // .then((fetchObj) => {
 //     console.log(fetchObj)
-//     return fetchObj.json()
+//     return fetchObj.json() // .json is a method available and specific to fetch. It takes whatever you get and converts it into JSON and then JavaScript.
 // })
 // .then((jsonData) => {
-//     console.log('Here is the json data:', jsonData) // This gets printed after 'Just fired the AJAX request because the request takes a while.
+//     console.log('Here is the json data converted into JavaScript:', jsonData) // This gets printed after 'Just fired the AJAX request because the request takes a while.
 // })
 // .catch((error) => {
 // console.log("Oh no, you did NOT make fetch happen")
@@ -40,6 +40,7 @@
 const addPerson = (person) => {
     let peopleList = document.getElementById('people_list')
     let newPerson = document.createElement('li')
+    // name.first and name.last are specific to this website's JSON objects.
     newPerson.textContent = `${person.name.first} ${person.name.last}` // String interpolation.
     // newPerson.textContent = person.name.first + ' ' + person.name.last // String concatenation.
     peopleList.appendChild(newPerson)
@@ -53,17 +54,18 @@ document.addEventListener('DOMContentLoaded', () =>
 
         // Clear the list each time. 
         // How to remove all child nodes: https://www.javascripttutorial.net/dom/manipulating/remove-all-child-nodes/
-        while(peopleList.firstChild) { // Checks if there's a first child. Basically removes all children.
-            peopleList.removeChild(peopleList.firstChild)
-        }
+        // while(peopleList.firstChild) { // Checks if there's a first child. Basically removes all children.
+        //     peopleList.removeChild(peopleList.firstChild)
+        // }
 
         fetch(randomUserEndpoint + input.value)
         .then((fetchedUsers) => {
             return fetchedUsers.json()
         })
         .then((jsonUsers) => {
+            // .results is specific to this site's JSON objects.
             jsonUsers.results.forEach(addPerson) // For each jsonUsers, we'll run addPerson on it.
-            console.log(jsonUsers.results)
+            console.log('jsonUsers.results',jsonUsers.results)
         })
         .catch((error) => {
             console.log('Failed to fetch users!', error)
